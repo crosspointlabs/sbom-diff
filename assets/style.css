@@ -39,6 +39,10 @@ details:has(details.added) > summary {
     color: #990;
     font-weight: bold;
 }
+details.added:has(details.added) > summary {
+    color: #0a0;
+}
+
 
 summary {
     cursor: pointer;
