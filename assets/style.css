@@ -1,10 +1,30 @@
+body {
+    padding: 2em;
+    background: #222;
+    color: #fff;
+}
+main {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-grow: 0;
+}
+main column {
+    width: 40%;
+}
+button {
+    font-size: 130%;
+}
+
 textarea {
     width: 100%;
     height: 5em;
     margin-bottom: 1em;
+    margin-top: 1em;
 }
 details {
-    border-left: 1px solid #ddd;
+    border-left: 1px solid #444;
     margin-left: 1em;
     position: relative;
 }
@@ -12,8 +32,14 @@ details > summary {
     margin-left: -5px;
 }
 details.added > summary {
-    color: green;
+    color: #0a0;
+    font-weight: bold;
 }
+details:has(details.added) > summary {
+    color: #990;
+    font-weight: bold;
+}
+
 summary {
     cursor: pointer;
     list-style: none;
@@ -34,11 +60,11 @@ summary::before {
     z-index: 3;
     width: 1em;
     height: 1em;
-    margin-top: -0.5em;
-    margin-bottom: -0.5em;
-    border-top: 0.5em solid #fff;
-    border-bottom: 0.5em solid #fff;
-    background-color: #fff;
+    margin-top: -0.4em;
+    margin-bottom: -0.4em;
+    border-top: 0.4em solid #222;
+    border-bottom: 0.4em solid #222;
+    background-color: #222;
 }
 details.leaf summary::before {
     content: " ";
@@ -50,16 +76,5 @@ details[open] > summary::before {
     content: "- ";
 }
 
-details:has(details.added) > summary {
-    color: #990;
-}
 
-main {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-grow: 0;
-}
-main column {
-    width: 40%;
-}
+
