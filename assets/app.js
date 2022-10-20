@@ -40,7 +40,7 @@ function runDiff() {
 }
 function enumerateComponents(sbom) {
     let components = {};
-    sbom.components.forEach(component => {
+    (sbom.components|| []).forEach(component => {
         components[component["bom-ref"]] = component;
     });
     let mainComp = sbom.metadata?.component;
@@ -87,7 +87,7 @@ function c(parent, name, classes = []) {
 }
 
 function appendComponentTree(parentNode, components) {
-    let det = c(parentNode, "details");
+    let det = c(parentNode, "details", ["header"]);
     let sum = c(det, "summary", ["header"]);
     sum.textContent = "Components";
 
@@ -124,7 +124,7 @@ function possiblyParseNumber(x) {
 }
 
 function appendVulnTree(parentNode, vulns) {
-    let det = c(parentNode, "details");
+    let det = c(parentNode, "details", ["header"]);
     let sum = c(det, "summary", ["header"]);
     sum.textContent = "Vulnerabilities";
 
