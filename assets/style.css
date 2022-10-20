@@ -98,3 +98,6 @@ summary.header span::before {
 summary.header span::after {
     content: ")";
 }
+summary.header + details {
+    margin-left: 1.5em;
+}
