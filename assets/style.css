@@ -26,40 +26,40 @@ textarea {
     background-color: #555;
     color: #fff;
 }
-details {
+details.tree {
     border-left: 1px solid #444;
     margin-left: 1em;
     position: relative;
 }
-details > summary {
+details.tree > summary {
     margin-left: -5px;
 }
-details.added > summary {
+details.tree.added > summary {
     color: #0a0;
     font-weight: bold;
 }
-details:has(details.added) > summary {
+details.tree:has(details.added) > summary {
     color: #990;
     font-weight: bold;
 }
-details.added:has(details.added) > summary {
+details.tree.added:has(details.added) > summary {
     color: #0a0;
 }
 
 
-summary {
+summary.tree {
     cursor: pointer;
     list-style: none;
 }
-details.leaf summary {
+details.tree.leaf summary.tree {
     cursor: default;
 }
 
 
-summary::marker, summary::-webkit-details-marker {
+summary.tree::marker, summary::-webkit-details-marker {
     display: none;
 }
-summary::before {
+summary.tree::before {
     content: "+";
     display: inline-block;
     font-family: monospace;
@@ -73,15 +73,19 @@ summary::before {
     border-bottom: 0.4em solid #222;
     background-color: #222;
 }
-details.leaf summary::before {
+details.tree.leaf summary.tree::before {
     content: " ";
     visibility: hidden;
 }
 
 
-details[open] > summary::before {
+details.tree[open] > summary.tree::before {
     content: "- ";
 }
 
-
+summary.header {
+    font-size: 120%;
+    font-weight: bold;
+    margin-top: 1em;
+}
 
