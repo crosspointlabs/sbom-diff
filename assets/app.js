@@ -128,6 +128,11 @@ function appendVulnTree(parentNode, vulns) {
     let sum = c(det, "summary", ["header"]);
     sum.textContent = "Vulnerabilities";
 
+    if (Object.keys(vulns).length == 0) {
+        c(det, "i").textContent = "No vulnerabilities in report";
+        return;
+    }
+
     let ids = Object.keys(vulns);
     ids.sort((a, b) => {
         let ka = a.split("-");

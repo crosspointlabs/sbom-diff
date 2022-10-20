@@ -101,3 +101,6 @@ summary.header span::after {
 summary.header + details {
     margin-left: 1.5em;
 }
+summary.header + i {
+    margin-left: 1.5em;
+}
