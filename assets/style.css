@@ -87,5 +87,14 @@ summary.header {
     font-size: 120%;
     font-weight: bold;
     margin-top: 1em;
+    cursor: pointer;
 }
-
+summary.header span {
+    color: #aaa;
+}
+summary.header span::before {
+    content: " (+";
+}
+summary.header span::after {
+    content: ")";
+}

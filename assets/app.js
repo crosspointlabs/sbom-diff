@@ -93,9 +93,14 @@ function appendComponentTree(parentNode, components) {
 
     let roots = Object.values(components).filter(a => a.incomingRefs == undefined);
     roots.sort((a,b) => a.name < b.name ? -1 : 1);
+    let changeCount = 0;
     roots.forEach(root => {
-        writeComponentTree(det, root);
+        changeCount += writeComponentTree(det, root);
     })
+    if (changeCount > 0) {
+        let count = c(sum, "span");
+        count.textContent = changeCount;
+    }
 }
 
 function writeComponentTree(parentNode, dep) {
@@ -104,10 +109,12 @@ function writeComponentTree(parentNode, dep) {
     summary.textContent = `${dep.name} @ ${dep.version}`;
     summary.setAttribute("data-bom-ref", dep["bom-ref"]);
     if (dep.dependsOn && dep.dependsOn.length > 0) {
-        dep.dependsOn.map(c => writeComponentTree(container, c));
+        let changes = dep.dependsOn.map(c => writeComponentTree(container, c)).reduce((a,b) => a+b, 0);
+        return changes + (dep.modificationClass == "added" ? 1 : 0)
     } else {
         container.className += " leaf";
         summary.className += " leaf";
+        return (dep.modificationClass == "added" ? 1 : 0);
     }
 }
 
@@ -133,9 +140,10 @@ function appendVulnTree(parentNode, vulns) {
         }
         return ka.length - kb.length;
     });
-
+    let changeCount = 0;
     ids.forEach(id => {
         let vuln = vulns[id];
+        if (vuln.modificationClass == "added") changeCount++;
         let container = c(det, "details", [vuln.modificationClass, "tree"]);
         let summary = c(container, "summary", ["tree"]);
         summary.textContent = id;
@@ -145,4 +153,8 @@ function appendVulnTree(parentNode, vulns) {
             s.textContent = `${a.component.name} @ ${a.component.version}`;
         });
     })
+    if (changeCount > 0) {
+        let count = c(sum, "span");
+        count.textContent = changeCount;
+    }
 }
