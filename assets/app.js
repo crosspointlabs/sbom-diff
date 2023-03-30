@@ -22,7 +22,7 @@ function runDiff() {
         Object.values(a[1]).filter(comp => 
             others.filter(comp2 => 
                 (comp.purl && comp2.purl && comp.purl == comp2.purl) ||
-                comp.name == comp2.name && comp.version == comp2.version
+                (comp.name == comp2.name && comp.version == comp2.version)
             ).length == 0
         ).forEach(k => k.modificationClass = "added")
         let othersVulns = mapped.filter(x => x != a).map(k => Object.values(k[2])).reduce((a,b) => a.concat(b), []);
@@ -70,9 +70,14 @@ function enumerateVulns(components, sbom) {
             let {ref} = a;
             components[ref].affectedBy = components[ref].affectedBy || [];
             components[ref].affectedBy.push(v);
-            a.component = components[ref];
+            a.components = a.components || [];
+            a.components.push(components[ref]);
         })
-        vulns[v.id] = v;
+        if (vulns[v.id]) {
+            vulns[v.id].affects = vulns[v.id].affects.concat(v.affects);
+        } else {
+            vulns[v.id] = v;
+        }
     })
     console.log(vulns);
     return vulns;
@@ -106,7 +111,7 @@ function appendComponentTree(parentNode, components) {
 function writeComponentTree(parentNode, dep) {
     let container = c(parentNode, "details", [dep.modificationClass, "tree"]);
     let summary = c(container, "summary", ["tree"]);
-    summary.textContent = `${dep.name} @ ${dep.version}`;
+    summary.textContent = `${dep.name} @ ${dep.version} (${dep.incomingRefs || 0}})`;
     summary.setAttribute("data-bom-ref", dep["bom-ref"]);
     if (dep.dependsOn && dep.dependsOn.length > 0) {
         let changes = dep.dependsOn.map(c => writeComponentTree(container, c)).reduce((a,b) => a+b, 0);
@@ -154,8 +159,10 @@ function appendVulnTree(parentNode, vulns) {
         summary.textContent = id;
         (vuln.affects || []).map(a => {
             let d = c(container, "details", [vuln.modificationClass, "tree", "leaf"]);
-            let s = c(d, "summary", ["tree", "leaf"]);
-            s.textContent = `${a.component.name} @ ${a.component.version}`;
+            for(let comp of a.components) { 
+                let s = c(d, "summary", ["tree", "leaf"]);
+                s.textContent = `${comp.name} @ ${comp.version}`;
+            }
         });
     })
     if (changeCount > 0) {
