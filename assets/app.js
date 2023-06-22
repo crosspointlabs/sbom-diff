@@ -111,7 +111,7 @@ function appendComponentTree(parentNode, components) {
 function writeComponentTree(parentNode, dep) {
     let container = c(parentNode, "details", [dep.modificationClass, "tree"]);
     let summary = c(container, "summary", ["tree"]);
-    summary.textContent = `${dep.name} @ ${dep.version} (${dep.incomingRefs || 0}})`;
+    summary.textContent = `${dep.name} @ ${dep.version} (${dep.incomingRefs || 0})`;
     summary.setAttribute("data-bom-ref", dep["bom-ref"]);
     if (dep.dependsOn && dep.dependsOn.length > 0) {
         let changes = dep.dependsOn.map(c => writeComponentTree(container, c)).reduce((a,b) => a+b, 0);
